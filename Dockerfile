@@ -30,4 +30,4 @@ VOLUME ["/opt/nginx"]
 
 EXPOSE 80
 
-CMD ["/usr/local/openresty/nginx/sbin/nginx", "-p", "/opt/nginx/conf", "-c", "nginx.conf"]
+CMD ["/usr/local/openresty/nginx/sbin/nginx", "-c", "/opt/nginx/conf/nginx.conf"]
