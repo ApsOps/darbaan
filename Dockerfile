@@ -7,24 +7,20 @@ ENV BUILD_DEPS libreadline-dev libncurses5-dev libpcre3-dev \
                libssl-dev perl make build-essential curl
 
 # Install OpenResty dependencies
-RUN apt-get update
-RUN apt-get -y install $BUILD_DEPS
-
-# Install OpenResty with modules for Lua support
-RUN curl -O http://openresty.org/download/ngx_openresty-${OPENRESTY_VERSION}.tar.gz
-RUN tar xzvf ngx_openresty-${OPENRESTY_VERSION}.tar.gz
-
-WORKDIR /ngx_openresty-${OPENRESTY_VERSION}/
-RUN ./configure --with-luajit \
+RUN apt-get update && \
+    apt-get -y install $BUILD_DEPS && \
+    curl -O http://openresty.org/download/ngx_openresty-${OPENRESTY_VERSION}.tar.gz && \
+    tar xzvf ngx_openresty-${OPENRESTY_VERSION}.tar.gz && \
+    cd /ngx_openresty-${OPENRESTY_VERSION}/  && \
+    ./configure --with-luajit \
                 --with-http_gzip_static_module \
                 --with-http_ssl_module \
-                --with-pcre-jit
-RUN make && \
-    make install
-
-RUN rm -rf /ngx_openresty*
-RUN apt-get -y remove $BUILD_DEPS
-RUN apt-get -y autoremove
+                --with-pcre-jit && \
+    make && \
+    make install && \
+    rm -rf /ngx_openresty* && \
+    apt-get -y remove $BUILD_DEPS && \
+    apt-get -y autoremove
 
 VOLUME ["/opt/nginx"]
 
